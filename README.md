@@ -30,7 +30,7 @@ Initialize FilePicker with required parameters including view controller, delega
 1. Import the module:
 
 ```swift
-import 'FilePickerPod'
+import FilePickerPod
 ```
 
 2. Initialize FilePicker with required parameters including view controller, delegate, and file size limits.
