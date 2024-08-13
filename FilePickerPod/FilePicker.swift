@@ -1,5 +1,4 @@
 import UIKit
-import MobileCoreServices
 import UniformTypeIdentifiers
 
 public protocol FilePickerDelegate: AnyObject {
@@ -30,7 +29,9 @@ public class FilePicker: NSObject, UIImagePickerControllerDelegate, UINavigation
 
     public func pickDocument(type: DocumentType) {
         allowedDocumentTypes = Set(type.fileTypes)
-        let documentPicker = UIDocumentPickerViewController(documentTypes: type.fileTypes, in: .import)
+        
+        // Update the initializer to use the new method
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: type.contentTypes, asCopy: true)
         documentPicker.delegate = self
         viewController?.present(documentPicker, animated: true, completion: nil)
     }
@@ -103,6 +104,27 @@ public class FilePicker: NSObject, UIImagePickerControllerDelegate, UINavigation
                     UTType.text.identifier,
                     "com.microsoft.word.doc",
                     "org.openxmlformats.wordprocessingml.document"
+                ]
+            }
+        }
+
+        var contentTypes: [UTType] {
+            switch self {
+            case .pdf:
+                return [UTType.pdf]
+            case .text:
+                return [UTType.text]
+            case .word:
+                return [
+                    UTType("com.microsoft.word.doc")!,
+                    UTType("org.openxmlformats.wordprocessingml.document")!
+                ]
+            case .all:
+                return [
+                    UTType.pdf,
+                    UTType.text,
+                    UTType("com.microsoft.word.doc")!,
+                    UTType("org.openxmlformats.wordprocessingml.document")!
                 ]
             }
         }
